@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjetoUsuarios.Helper;
 using ProjetoUsuarios.Models;
 using ProjetoUsuarios.Repositories;
 using System;
@@ -12,16 +13,29 @@ namespace ProjetoUsuarios.Controllers
     public class LoginController : Controller
     {
         private readonly IUsuarioRepo _usuarioRepo;
+        private readonly ISessao _sessao;
 
         public UsuarioModel UsuarioModel { get; private set; }
 
-        public LoginController(IUsuarioRepo usuarioRepo)
+        public LoginController(IUsuarioRepo usuarioRepo, ISessao sessao)
         {
             _usuarioRepo = usuarioRepo;
+            _sessao = sessao;
         }
         public IActionResult Index()
         {
+            //Se usuário estiver logado, redirecionar para a Home
+            if(_sessao.BuscarSessaoUsuario() != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
+        }
+
+        public IActionResult Sair()
+        {
+            _sessao.RemoverSessaoUsuario();
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
@@ -35,6 +49,7 @@ namespace ProjetoUsuarios.Controllers
                     if(usuario != null){
                         if (usuario.SenhaValida(loginModel.Senha))
                         {
+                            _sessao.CriarSessaoUsuario(usuario);
                             return RedirectToAction("Index", "Home");
                         }
                         TempData["MensagemErro"] = $"Senha do usuário inválida. Tente novamente!";
