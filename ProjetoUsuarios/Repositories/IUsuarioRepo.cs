@@ -8,6 +8,7 @@ namespace ProjetoUsuarios.Repositories
 {
     public interface IUsuarioRepo
     {
+        UsuarioModel BuscarPorEmail(string email);
         UsuarioModel ListarPorId(int id);
         List<UsuarioModel> BuscarTodos();
         UsuarioModel Adicionar(UsuarioModel usuario);

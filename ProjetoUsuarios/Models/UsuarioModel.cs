@@ -21,5 +21,11 @@ namespace ProjetoUsuarios.Models
         public PerfilEnum? Perfil { get; set; }
         public DateTime DataCadatro { get; set;  }
         public DateTime? DataAltualizacao { get; set;  }
+
+
+        public bool SenhaValida(string senha)
+        {
+            return Senha == senha;
+        }
     }
 }

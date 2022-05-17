@@ -47,6 +47,11 @@ namespace ProjetoUsuarios.Repositories
             return usuarioDb;
         }
 
+        public UsuarioModel BuscarPorEmail(string email)
+        {
+            return _bancoContext.Usuarios.FirstOrDefault(x => x.Email.ToUpper() == email.ToUpper());
+        }
+
         public List<UsuarioModel> BuscarTodos()
         {
             return _bancoContext.Usuarios.ToList();
