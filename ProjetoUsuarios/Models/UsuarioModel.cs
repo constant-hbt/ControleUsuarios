@@ -1,4 +1,5 @@
 ﻿using ProjetoUsuarios.Enums;
+using ProjetoUsuarios.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +26,12 @@ namespace ProjetoUsuarios.Models
 
         public bool SenhaValida(string senha)
         {
-            return Senha == senha;
+            return Senha == senha.GerarHash();
+        }
+
+        public void SetSenhaHash()
+        {
+            Senha = Senha.GerarHash();
         }
     }
 }
