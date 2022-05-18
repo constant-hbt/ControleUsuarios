@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjetoUsuarios.Filters;
 using ProjetoUsuarios.Models;
 using ProjetoUsuarios.Repositories;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoUsuarios.Controllers
 {
+    [PaginaRestritaAdmin]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioRepo _usuarioRepositorio;
