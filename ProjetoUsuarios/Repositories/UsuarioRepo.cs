@@ -1,4 +1,6 @@
-﻿using ProjetoUsuarios.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProjetoUsuarios.Data;
 using ProjetoUsuarios.Models;
 using System;
 using System.Collections.Generic;
@@ -14,27 +16,27 @@ namespace ProjetoUsuarios.Repositories
         {
             _bancoContext = bancoContext;
         }
-        public UsuarioModel Adicionar(UsuarioModel usuario)
+        public async Task<UsuarioModel> Adicionar(UsuarioModel usuario)
         {
             usuario.DataCadatro = DateTime.Now;
             usuario.SetSenhaHash();
-            _bancoContext.Usuarios.Add(usuario);
-            _bancoContext.SaveChanges();
+            await _bancoContext.Usuarios.AddAsync(usuario);
+            await _bancoContext.SaveChangesAsync();
             return usuario;
         }
 
-        public bool Apagar(int id)
+        public async Task<bool> Apagar(int id)
         {
-            UsuarioModel usuarioDb = ListarPorId(id);
+            UsuarioModel usuarioDb = ListarPorId(id).Result;
             if (usuarioDb == null) throw new Exception("Houve uma deleção do usuário");
             _bancoContext.Usuarios.Remove(usuarioDb);
-            _bancoContext.SaveChanges();
+            await _bancoContext.SaveChangesAsync();
             return true;
         }
 
-        public UsuarioModel Atualizar(UsuarioModel usuario)
+        public async Task<UsuarioModel> Atualizar(UsuarioModel usuario)
         {
-            UsuarioModel usuarioDb = ListarPorId(usuario.Id);
+            UsuarioModel usuarioDb = ListarPorId(usuario.Id).Result;
             if (usuarioDb == null) throw new Exception("Houve um erro na atualização do usuário");
 
             usuarioDb.Nome = usuario.Nome;
@@ -43,24 +45,25 @@ namespace ProjetoUsuarios.Repositories
             usuarioDb.Perfil = usuario.Perfil;
 
             _bancoContext.Usuarios.Update(usuarioDb);
-            _bancoContext.SaveChanges();
+            await _bancoContext.SaveChangesAsync();
 
             return usuarioDb;
         }
 
-        public UsuarioModel BuscarPorEmail(string email)
+        public async Task<UsuarioModel> BuscarPorEmail(string email)
         {
-            return _bancoContext.Usuarios.FirstOrDefault(x => x.Email.ToUpper() == email.ToUpper());
+            return await _bancoContext.Usuarios.FirstOrDefaultAsync(x => x.Email.ToUpper() == email.ToUpper());
         }
 
-        public List<UsuarioModel> BuscarTodos()
+        public async Task<List<UsuarioModel>> BuscarTodos()
         {
-            return _bancoContext.Usuarios.ToList();
+            var usuarios = await _bancoContext.Usuarios.ToListAsync();
+            return usuarios;
         }
 
-        public UsuarioModel ListarPorId(int id)
+        public async Task<UsuarioModel> ListarPorId(int id)
         {
-            return _bancoContext.Usuarios.FirstOrDefault(x => x.Id == id);
+            return await _bancoContext.Usuarios.FirstOrDefaultAsync((x => x.Id == id));
         }
     }
 }

@@ -8,11 +8,11 @@ namespace ProjetoUsuarios.Repositories
 {
     public interface IUsuarioRepo
     {
-        UsuarioModel BuscarPorEmail(string email);
-        UsuarioModel ListarPorId(int id);
-        List<UsuarioModel> BuscarTodos();
-        UsuarioModel Adicionar(UsuarioModel usuario);
-        UsuarioModel Atualizar(UsuarioModel usuario);
-        bool Apagar(int id);
+        Task<UsuarioModel> BuscarPorEmail(string email);
+        Task<UsuarioModel> ListarPorId(int id);
+        Task<List<UsuarioModel>> BuscarTodos();
+        Task<UsuarioModel> Adicionar(UsuarioModel usuario);
+        Task<UsuarioModel> Atualizar(UsuarioModel usuario);
+        Task<bool> Apagar(int id);
     }
 }

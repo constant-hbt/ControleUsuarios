@@ -19,8 +19,8 @@ namespace ProjetoUsuarios.Controllers
         }
         public IActionResult Index()
         {
-            List<UsuarioModel> usuarios = _usuarioRepositorio.BuscarTodos();
-            return View(usuarios);
+            var usuarios = _usuarioRepositorio.BuscarTodos();
+            return View(usuarios.Result);
         }
 
         public IActionResult Criar()
@@ -30,7 +30,7 @@ namespace ProjetoUsuarios.Controllers
 
         public IActionResult Editar(int id)
         {
-            UsuarioModel usuario = _usuarioRepositorio.ListarPorId(id);
+            UsuarioModel usuario = _usuarioRepositorio.ListarPorId(id).Result;
             return View(usuario);
         }
 
@@ -56,7 +56,7 @@ namespace ProjetoUsuarios.Controllers
 
         public IActionResult ApagarConfirmacao(int id)
         {
-            UsuarioModel usuario = _usuarioRepositorio.ListarPorId(id);
+            UsuarioModel usuario = _usuarioRepositorio.ListarPorId(id).Result;
             return View(usuario);
         }
 
@@ -64,7 +64,7 @@ namespace ProjetoUsuarios.Controllers
         {
             try
             {
-                bool apagado = _usuarioRepositorio.Apagar(id);
+                bool apagado = _usuarioRepositorio.Apagar(id).Result;
                 if (apagado)
                 {
                     TempData["MensagemSucesso"] = "Usuário excluído com sucesso!";
@@ -99,7 +99,7 @@ namespace ProjetoUsuarios.Controllers
                         Perfil = usuarioSemSenhaModel.Perfil
                     };
 
-                    usuario = _usuarioRepositorio.Atualizar(usuario);
+                    usuario = _usuarioRepositorio.Atualizar(usuario).Result;
                     TempData["MensagemSucesso"] = "Usuário alterado com sucesso!";
                     return RedirectToAction("Index");
 

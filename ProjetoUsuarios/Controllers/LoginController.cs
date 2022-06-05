@@ -50,7 +50,7 @@ namespace ProjetoUsuarios.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    UsuarioModel usuario = _usuarioRepo.BuscarPorEmail(loginModel.Email);
+                    UsuarioModel usuario = _usuarioRepo.BuscarPorEmail(loginModel.Email).Result;
                     if(usuario != null){
                         if (usuario.SenhaValida(loginModel.Senha))
                         {
@@ -77,7 +77,7 @@ namespace ProjetoUsuarios.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    UsuarioModel usuario = _usuarioRepo.BuscarPorEmail(redefinirSenhaModel.Email);
+                    UsuarioModel usuario = _usuarioRepo.BuscarPorEmail(redefinirSenhaModel.Email).Result;
                     if (usuario != null)
                     {
                         string novaSenha = usuario.GerarNovaSenha();
